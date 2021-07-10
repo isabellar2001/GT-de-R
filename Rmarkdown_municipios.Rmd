@@ -1,0 +1,158 @@
+---
+title: "Gráficos de Segurança - Município RJ"
+author: "Isabella Rodrigues"
+date: "09/07/2021"
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r carregamento de dados, include = FALSE}
+library(readxl)
+library(tidyverse)
+library(ggplot2)
+library(readr)
+library(ggthemes)
+library(rmarkdown)
+
+```
+```{r carregar base de dados, echo = FALSE, message = FALSE, warning=FALSE, include = FALSE}
+seguranca_rj <- read_delim("~/Minerva/Segurança/Minerva Consultoria/Segurança - BaseMunicipioTaxaAno.csv", ";", 
+                           escape_double = FALSE, 
+                           col_types = "dcdcddddddddddddddddddddddddddddddddddddddddddddddddddddd", 
+                           locale = locale(decimal_mark = ",", grouping_mark = ".", 
+                                           encoding = "WINDOWS-1252"), trim_ws = TRUE)
+library(knitr)
+kable(head(seguranca_rj, 10))
+```
+```{r selecionando município, message = FALSE, warning=FALSE, include = FALSE}
+munic = "Rio de Janeiro" #coloque aqui o nome do munic?pio que voc? quer analisar.
+
+seguranca_munic <- seguranca_rj %>% filter(fmun == munic)
+
+```
+## Município: `r toString(munic)`
+
+```{r criar tema gráfico, message = FALSE, warning= FALSE, include = FALSE}
+#Criei um tema azul para usar nos gr?ficos:
+theme_bluewhite <- function (base_size = 22, base_family = "") {
+  theme_bw() %+replace% 
+    theme(
+      panel.grid.major  = element_line(color = "white"),
+      panel.background = element_rect(fill = "lightblue"),
+      panel.border = element_rect(color = "lightblue", fill = NA),
+      axis.line = element_line(color = "lightblue"),
+      plot.title = element_text(size = 18, face = "bold", vjust = 3, hjust = 0.5),
+      plot.margin=unit(c(0.3,0.8,1.2,0.8),"cm")
+    )
+}
+
+```
+
+```{r função dos gráficos, message = FALSE, warning = FALSE, echo =FALSE, results = "hide"}
+
+graf_seguranca <- function(base_dados) {
+  
+  graf_hom_doloso <- ggplot(base_dados, aes(x = ano, y = hom_doloso)) +
+    geom_line() +  
+    labs(title = "Homicídio doloso",
+         caption = "Fonte: ISP") + theme_bluewhite()
+
+  
+  graf_lesao_corp_morte <- ggplot(base_dados, aes(x = ano, y = lesao_corp_morte)) +
+    geom_line() +  
+    labs(title = "Lesão corporal seguida de morte",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_cvli <- ggplot(base_dados, aes(x = ano, y = cvli)) +
+    geom_line() +  
+    labs(title = "Crimes violentos letais intecionais",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_hom_por_interv_policial <- ggplot(base_dados, aes(x = ano, y = hom_por_interv_policial)) +
+    geom_line() +  
+    labs(title = "Homicídio decorrente de intervenção policial",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_letalidade_violenta <- ggplot(base_dados, aes(x = ano, y = letalidade_violenta)) +
+    geom_line() +  
+    labs(title = "Letalidade violenta",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_tentat_hom <- ggplot(base_dados, aes(x = ano, y = tentat_hom)) +
+    geom_line() +  
+    labs(title = "Tentativa de homicídio",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_lesao_corp_dolosa <- ggplot(base_dados, aes(x = ano, y = lesao_corp_dolosa)) +
+    geom_line() +  
+    labs(title = "Lesão corporal dolosa",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_estupro <- ggplot(base_dados, aes(x = ano, y = estupro)) +
+    geom_line() +  
+    labs(title = "Estupro",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_hom_culposo <- ggplot(base_dados, aes(x = ano, y = hom_culposo)) +
+    geom_line() +  
+    labs(title = "Homicídio culposo",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_lesao_corp_culposa <- ggplot(base_dados, aes(x = ano, y = lesao_corp_culposa)) +
+    geom_line() +  
+    labs(title = "Lesão corporal culposa",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_roubo_transeunte <- ggplot(base_dados, aes(x = ano, y = roubo_transeunte)) +
+    geom_line() +  
+    labs(title = "Roubo a transeunte",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_roubo_celular <- ggplot(base_dados, aes(x = ano, y = roubo_celular)) +
+    geom_line() +  
+    labs(title = "Roubo de celular",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_roubo_em_coletivo <- ggplot(base_dados, aes(x = ano, y = roubo_em_coletivo)) +
+    geom_line() +  
+    labs(title = "Roubo em coletivo",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_roubo_rua <- ggplot(base_dados, aes(x = ano, y = roubo_rua)) +
+    geom_line() +  
+    labs(title = "Roubo na rua",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+    graf_roubo_carga <- ggplot(base_dados, aes(x = ano, y = roubo_carga)) +
+    geom_line() +  
+    labs(title = "Roubo de carga",
+         caption = "Fonte: ISP") + theme_bluewhite()
+    
+  graf_roubo_comercio <- ggplot(base_dados, aes(x = ano, y = roubo_comercio)) +
+    geom_line() +  
+    labs(title = "Roubo a comércio",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_roubo_residencia <- ggplot(base_dados, aes(x = ano, y = roubo_residencia)) +
+    geom_line() +  
+    labs(title = "Roubo a residências",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_roubo_banco <- ggplot(base_dados, aes(x = ano, y = roubo_banco)) +
+    geom_line() +  
+    labs(title = "Roubo de bancos",
+         caption = "Fonte: ISP") + theme_bluewhite()
+  
+  graf_roubo_cx_eletronico <- ggplot(base_dados, aes(x = ano, y = roubo_cx_eletronico)) +
+    geom_line() +  
+    labs(title = "Roubo a caixa eletrônico",
+         caption = "Fonte: ISP") + theme_bluewhite()
+    
+  graf_function <- list(graf_hom_doloso,graf_lesao_corp_morte, graf_cvli, graf_hom_por_interv_policial,graf_letalidade_violenta, graf_tentat_hom, graf_lesao_corp_dolosa, graf_estupro, graf_hom_culposo, graf_lesao_corp_culposa, graf_roubo_transeunte, graf_roubo_celular, graf_roubo_em_coletivo, graf_roubo_rua, graf_roubo_carga, graf_roubo_comercio, graf_roubo_residencia, graf_roubo_banco, graf_roubo_cx_eletronico)
+  return(graf_function)
+  
+}
+
+graf_seguranca(seguranca_munic)
+```
