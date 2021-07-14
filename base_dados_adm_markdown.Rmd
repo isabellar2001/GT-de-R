@@ -1,0 +1,79 @@
+---
+title: "Registros Administrativos (2012-2017)"
+author: "Isabella Rodrigues"
+date: "12/07/2021"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(ggthemes)
+library(readxl)
+library(dplyr)
+library(rmarkdown)
+library(tidyverse)
+library(kableExtra)
+
+```
+```{r criar tema gráfico, message = FALSE, warning= FALSE, include = FALSE}
+theme_bluewhite <- function (base_size = 22, base_family = "") {
+  theme_bw() %+replace% 
+    theme(
+      panel.grid.major  = element_line(color = "white"),
+      panel.background = element_rect(fill = "lightblue"),
+      panel.border = element_rect(color = "lightblue", fill = NA),
+      axis.line = element_line(color = "lightblue"),
+      plot.title = element_text(size = 18, face = "bold", vjust = 3, hjust = 0.5),
+      plot.margin=unit(c(0.3,0.3,0.3,0.3),"cm")
+    )
+}
+
+```
+
+```{r importar base de dados, echo = FALSE, warning= FALSE}
+base_dados_administrativos <- read_xlsx("base_dados_administrativos.xlsx", 
+    range = "A1:CD27851", col_names = TRUE)
+glimpse(base_dados_administrativos)
+```
+
+```{r filtrar município, echo = FALSE, warning= FALSE}
+munic = "Maricá"
+adm_munic <- base_dados_administrativos %>% filter(NOME == munic)
+
+```
+## Município: `r toString(munic)`
+
+##Educação
+```{r dados de educação, echo = FALSE, warning = FALSE}
+paged_table(adm_munic)
+adm_munic_ideb <- adm_munic %>% select(ANO, NOME, IDEB_AI, IDEB_AF) %>% na.omit()
+paged_table(adm_munic_ideb)
+
+adm_munic_ideb %>% select(ANO, NOME, IDEB_AI) %>% 
+  pivot_longer(cols = -c(ANO,NOME),
+               names_to = "INDICADOR",
+               values_to = "NOTA") %>% 
+  ggplot(aes(ANO, NOTA)) +
+  geom_line() +
+  scale_x_continuous(breaks = adm_munic_ideb$ANO, labels = adm_munic_ideb$ANO) +
+  theme_bluewhite()
+
+adm_munic_ideb %>% select(ANO, NOME, IDEB_AF) %>% 
+  pivot_longer(cols = -c(ANO,NOME),
+               names_to = "INDICADOR",
+               values_to = "NOTA") %>% 
+  ggplot(aes(ANO, NOTA)) +
+  geom_line() +
+  scale_x_continuous(breaks = adm_munic_ideb$ANO, labels = adm_munic_ideb$ANO) +
+  theme_bluewhite()
+
+```
+
+```{r tabela exemplos, echo = FALSE}
+kbl(adm_munic_ideb) %>%
+  kable_paper("striped", full_width = F) %>%
+  row_spec(1:3, bold = T, color = "white", background = "#02A7E8")
+```
