@@ -1,0 +1,15 @@
+---
+title: "Estrutura Básica do RMarkdown"
+author: "Fernanda Fiel Peres"
+date: "21/07/2020"
+output: html_document
+---
+
+# Elementos básicos do RMarkdown
+  
+## Títulos
+  
+
+
+  
+  
