@@ -1,1 +1,1 @@
-A base de dados administrativos está sendo usada agora para pegar dados do IDEB. Para você rodar o arquivo em R desses dados, você precisa baixar uma base de dados em Excel que tá no nosso Drive com o nome "DOWNLOADS REGISTROS ADMINISTRATIVOS". Não coloquei ele aqui no Github, porque não salva por algum motivo.
+
