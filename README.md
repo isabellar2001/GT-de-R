@@ -1,1 +1,1 @@
-
+Por enquanto, estamos usando só o arquivo base_dados_administrativos, que está aqui na pasta, para fazer o app.R rodar. Filtramos o CO_MUNICIPIO para ser igual ao código do IBGE de Niterói (3303302). Ainda não utilizamos a base de dados "base_municipio_rj.xlsx", nem "turmas.xlsx". No dashboard, aparece o gráfico do IDEB histórico da cidade, assim como gráficos do percentual de matrículas e da taxa de distorção idade-série. Esses dois últimos gráficos mudam de acordo com a seleção do usuário entre Público ou Privado e Ensino Fundamental ou Ensino Médio.
