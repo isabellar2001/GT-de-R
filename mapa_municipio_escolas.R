@@ -92,4 +92,8 @@ ggplot(mapaMun_japeri) +
         axis.title=element_blank(), 
         axis.ticks=element_blank(), 
         axis.text=element_blank()) +
-  geom_point(data = geocode_escolas_japeri, mapping = aes(x=lon, y = lat, color = rede))
+  geom_point(data = geocode_escolas_japeri, mapping = aes(x=lon, y = lat, color = str_to_title(rede))) +
+  theme(legend.key=element_blank()) +
+  scale_color_discrete(name="Dependência administrativa") +
+  ggtitle("Escolas por Dependência Administrativa em Japeri - RJ",
+          subtitle="Fonte: INEP - Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira")
